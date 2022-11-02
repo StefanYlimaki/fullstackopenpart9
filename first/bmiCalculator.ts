@@ -1,5 +1,3 @@
-
-
 const calculateBmi = (h: number, w: number): string => {
     h = h / 100;  //convert centimeters to meters
     const bmi = w / (h * h)
@@ -21,7 +19,6 @@ const calculateBmi = (h: number, w: number): string => {
     } else {
         return 'Obese (Class III)'
     }
-
 }
 
 console.log(calculateBmi(180, 74))
