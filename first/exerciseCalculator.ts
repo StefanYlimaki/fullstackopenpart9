@@ -1,4 +1,4 @@
-interface values {
+interface Report {
     periodLength: number,
     trainingDays: number,
     success: boolean,
@@ -8,7 +8,35 @@ interface values {
     average: number
 }
 
-const calculateExercises = (dailyExerciseHours: Array<number>, targerAmountOfDailyHours: number): values => {
+interface ExerciseValues {
+    targetAmountOfDailyHours: number;
+    dailyExerciseHours: Array<number>;
+}
+
+const parseExerciseArguments = (args: Array<string>): ExerciseValues => {
+    console.log(args)
+    if (args.length < 4) throw new Error('Not enough arguments');
+    const dailyHours: Array<number> = [];
+
+    for (let i = 3; i < args.length; i++) {
+        if (!isNaN(Number(args[i]))) {
+            dailyHours.push(Number(args[i]))
+        } else {
+            throw new Error('Provided values were not numbers!');
+        }
+    }
+
+    if (!isNaN(Number(args[2]))) {
+        return {
+            targetAmountOfDailyHours: Number(args[2]),
+            dailyExerciseHours: dailyHours
+        }
+    } else {
+        throw new Error('Provided values were not numbers!');
+    }
+}
+
+const calculateExercises = (dailyExerciseHours: Array<number>, targetAmountOfDailyHours: number): Report => {
     let trainingDays = 0
     let success = false
     let ratingDescription
@@ -22,17 +50,17 @@ const calculateExercises = (dailyExerciseHours: Array<number>, targerAmountOfDai
         totalHours += element
     })
 
-    if (totalHours < 5) {
+    const averageDailyHours = totalHours / dailyExerciseHours.length
+
+    if (averageDailyHours < 1) {
         rating = 1
-    } else if (totalHours < 15) {
+    } else if (averageDailyHours < 2) {
         rating = 2
     } else {
         rating = 3
     }
 
-    const averageDailyHours = totalHours / dailyExerciseHours.length
-
-    if (averageDailyHours > targerAmountOfDailyHours) {
+    if (averageDailyHours > targetAmountOfDailyHours) {
         success = true
     } else {
         success = false
@@ -52,10 +80,19 @@ const calculateExercises = (dailyExerciseHours: Array<number>, targerAmountOfDai
         success: success,
         rating: rating,
         ratingDescription: ratingDescription,
-        target: targerAmountOfDailyHours,
+        target: targetAmountOfDailyHours,
         average: averageDailyHours
     }
     return newValues
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+try {
+    const { dailyExerciseHours, targetAmountOfDailyHours } = parseExerciseArguments(process.argv);
+    console.log(calculateExercises(dailyExerciseHours, targetAmountOfDailyHours))
+} catch (error: unknown) {
+    let errorMessage = 'Something bad happened.'
+    if (error instanceof Error) {
+        errorMessage += ' Error: ' + error.message;
+    }
+    console.log(errorMessage)
+}
