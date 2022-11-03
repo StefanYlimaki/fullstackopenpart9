@@ -1,3 +1,4 @@
+/*
 interface bmiValues {
     h: number;
     w: number;
@@ -16,8 +17,8 @@ const parseBmiArguments = (args: Array<string>): bmiValues => {
         throw new Error('Provided values were not numbers!');
     }
 }
-
-const calculateBmi = (h: number, w: number): string => {
+*/
+export const calculateBmi = (h: number, w: number): string => {
     h = h / 100;  //convert centimeters to meters
     const bmi = w / (h * h)
 
@@ -39,7 +40,7 @@ const calculateBmi = (h: number, w: number): string => {
         return 'Obese (Class III)'
     }
 }
-
+/*
 try {
     const { h, w } = parseBmiArguments(process.argv);
     console.log(calculateBmi(h, w))
@@ -49,4 +50,4 @@ try {
         errorMessage += ' Error: ' + error.message;
     }
     console.log(errorMessage)
-}
+}*/
