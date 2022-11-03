@@ -1,17 +1,18 @@
+import { CoursePart } from '../types';
+import Part from './Part';
 
-interface ContentProps {
-    name: string;
-    exerciseCount: number;
-}
+const Content = ({ courseParts }: { courseParts: CoursePart[] }) => {
 
-const Content = ({ courseParts }: { courseParts: ContentProps[] }) => {
   return(
     <div>
-      { courseParts.map(c => <div key={ c.name }>{ c.name } { c.exerciseCount }</div>  )}
+      { courseParts.map(c =>
+        <div key={ c.name } style={{ paddingTop: 10 }} >
+          <strong>{ c.name }  { c.exerciseCount } </strong>
+          { <Part part={c}/>}
+        </div>
+      )}
     </div>
   );
 };
-
-
 
 export default Content;
