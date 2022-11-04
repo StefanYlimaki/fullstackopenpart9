@@ -1,15 +1,18 @@
 import { NewPatientEntry, Gender } from "./types";
 
-type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown };
+//type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries: unknown };
+// name, dateOfBirth, ssn, gender, occupation
 
-
-const toNewPatientEntry = ({ name, dateOfBirth, ssn, gender, occupation }: Fields): NewPatientEntry => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const toNewPatientEntry = (object: any): NewPatientEntry => {
     const newEntry: NewPatientEntry = {
-        name: parseString(name),
-        dateOfBirth: parseDate(dateOfBirth),
-        ssn: parseSSN(ssn),
-        gender: parseGender(gender),
-        occupation: parseString(occupation)
+        name: parseString(object.name),
+        dateOfBirth: parseDate(object.dateOfBirth),
+        ssn: parseSSN(object.ssn),
+        gender: parseGender(object.gender),
+        occupation: parseString(object.occupation),
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        entries: object.entries
     };
     return newEntry;
 };
@@ -57,7 +60,6 @@ const isGender = (param: any): param is Gender => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return Object.values(Gender).includes(param);
 };
-
 
 
 
