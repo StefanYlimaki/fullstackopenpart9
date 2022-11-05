@@ -1,5 +1,5 @@
 import { Patient, Gender } from "../src/types";
-import toNewPatientEntry from "../src/utils";
+import utils from "../src/utils";
 
 const data = [
   {
@@ -114,7 +114,7 @@ const data = [
 ];
 
 const patientEntries: Patient[] = data.map(obj => {
-  const object = toNewPatientEntry(obj) as Patient;
+  const object = utils.toNewPatientEntry(obj) as Patient;
   object.id = obj.id;
   return object;
 });

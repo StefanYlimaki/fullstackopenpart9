@@ -17,12 +17,23 @@ export interface Diagnosis {
     latin?: string;
 }
 
+export interface Patient {
+  id: string;
+  name: string;
+  ssn: string;
+  occupation: string;
+  gender: Gender;
+  dateOfBirth: string;
+  entries: Entry[]
+}
+
+
 interface BaseEntry {
   id: string;
   description: string;
   date: string;
   specialist: string;
-  diagnosisCodes?: Array<Diagnosis[]>;
+  diagnosisCodes?: Array<Diagnosis['code']>;
 }
 
 interface HealthCheckEntry extends BaseEntry {
@@ -47,20 +58,14 @@ interface HospitalEntry extends BaseEntry {
   }
 }
 
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+
 export type Entry = HospitalEntry | OccupationalHealthcareEntry | HealthCheckEntry;
 
-export interface Patient {
-  id: string;
-  name: string;
-  ssn: string;
-  occupation: string;
-  gender: Gender;
-  dateOfBirth: string;
-  entries: Entry[]
-}
-
-export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;
+export type NewEntry = UnionOmit<Entry, 'id'>;
 
 export type NewPatientEntry = Omit<Patient, "id">;
+
+export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;
 
 export type NonSensitivePatient = Omit<Patient, "ssn">;
